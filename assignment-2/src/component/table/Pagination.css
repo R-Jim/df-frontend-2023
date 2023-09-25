@@ -4,7 +4,7 @@
 }
 
 .pagination-container button {
-    width: 40px;
+    min-width: 40px;
 }
 
 .pagination-container button[active] {
