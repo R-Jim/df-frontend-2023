@@ -1,0 +1,11 @@
+header {
+    border-bottom: 1.5px solid var(--border-color);
+    display: flex;
+    align-items: center;
+}
+
+header>h1 {
+    font-size: 1.3em;
+    width: 60%;
+    padding: 8px;
+}
