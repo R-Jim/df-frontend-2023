@@ -1,0 +1,14 @@
+.pagination-container {
+    display: flex;
+    justify-content: center;
+}
+
+.pagination-container button {
+    width: 40px;
+}
+
+.pagination-container button[active] {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
