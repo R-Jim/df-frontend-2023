@@ -20,3 +20,7 @@ td > button {
     color: var(--primary-color);
     text-decoration-color: var(--secondary-color);
 }
+
+.no-record-txt{
+    text-align: center;
+}
