@@ -1,0 +1,9 @@
+main {
+    margin: 8px;
+}
+
+main>div {
+    margin: 15px 0;
+    width: 100%;
+    overflow: scroll;
+}
