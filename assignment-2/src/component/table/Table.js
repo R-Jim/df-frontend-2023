@@ -2,7 +2,7 @@ import Pagination from './Pagination';
 import './Table.css'
 
 function Table(params) {
-    const itemsRender = params.items.map((item, index) => {
+    var itemsRender = params.items.map((item, index) => {
         const rows = params.mapping.map(({ key }) =>
             <td key={key}>{item[key]}</td>
         );
@@ -13,6 +13,12 @@ function Table(params) {
             </tr>
         );
     })
+
+    if (itemsRender.length === 0) {
+        itemsRender = (<td colSpan={params.mapping.length}>
+            <p className='no-record-txt'>No Record</p>
+        </td>);
+    }
 
     const headersRender = params.mapping.map(({ display }) =>
         <td key={display}>{display}</td>
