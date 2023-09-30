@@ -1,0 +1,16 @@
+
+.input-container p {
+    color: var(--input-label-color);
+    margin: 0;
+    margin-bottom: 2px;
+    font-weight: bold;
+}
+
+.input-container select,
+.input-container input {
+    padding: 8.25px 10px;
+    border-radius: 5px;
+    border: 1.5px solid var(--border-color);
+    width: 100%;
+    box-sizing: border-box;
+}

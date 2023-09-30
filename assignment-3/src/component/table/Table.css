@@ -1,0 +1,26 @@
+table {
+    width: 100%;
+}
+
+table,
+th,
+td {
+    border: 1.5px solid var(--border-color);
+    border-collapse: collapse;
+    padding: 10px;
+    background-color: var(--background-table-color);
+    text-align: start;
+}
+
+td > button {
+    padding: 0;
+    min-width: auto;
+    font-size: 1em;
+    text-decoration: underline;
+    color: var(--primary-color);
+    text-decoration-color: var(--secondary-color);
+}
+
+.no-record-txt{
+    text-align: center;
+}
