@@ -8,30 +8,43 @@ interface PaginationProp {
     onChangePage: Function;
 }
 
+interface PaginationButtonProp {
+    key: number;
+    display: number;
+    attributes?: any;
+
+    onClick: Function;
+}
+
 function Pagination(params: PaginationProp) {
-    const pageButtonsRender: JSX.Element[] = []
+    const pageButtons: PaginationButtonProp[] = []
 
     const numberOfPages = Math.ceil(params.total / params.pageSize)
     for (let i = 0; i < numberOfPages; i++) {
-        let attributes = {}
+        const button: PaginationButtonProp = {
+            key: i,
+            display: i + 1,
 
+            onClick: () => params.onChangePage(i),
+        }
         if (params.currentPage === i) {
-            attributes = {
-                ...attributes,
+            button.attributes = {
+                ...button.attributes,
                 "active": "true",
             }
         }
 
-        const pageNumber = i
-        pageButtonsRender.push(
-            <button key={pageNumber} onClick={() => params.onChangePage(pageNumber)} {...attributes}>
-                {pageNumber+1}
-            </button>
-        )
+        pageButtons.push(button)
     }
     return (
         <div className="pagination-container">
-            {pageButtonsRender}
+            {pageButtons.map(({ key, display, onClick, attributes }) =>
+            (
+                <button key={key} onClick={onClick} {...attributes}>
+                    {display}
+                </button>
+            )
+            )}
         </div>
     );
 }

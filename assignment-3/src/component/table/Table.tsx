@@ -50,17 +50,15 @@ function Table(params: TableProps) {
             params.onChangePage(numberOfPages - 1);
         }
     })
-
-    const headersRender: JSX.Element[] = params.mappings.map(({ display }) =>
-        <td key={display}>{display}</td>
-    )
-
+    
     return (
         <div>
             <table>
                 <thead>
                     <tr>
-                        {headersRender}
+                        {params.mappings.map(({ display }) =>
+                            <td key={display}>{display}</td>
+                        )}
                     </tr>
                 </thead>
                 <tbody id="bookTableBody">

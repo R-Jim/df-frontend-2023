@@ -59,24 +59,25 @@ function Main() {
 
     const [currentPage, setCurrentPage] = useState(0);
 
-    const filteredBooks = books.filter(({ name }) => name.includes(searchBookName));
+    const filteredBooks = books.filter(({ name }) => name.toLowerCase().includes(searchBookName.toLowerCase()));
     const total = filteredBooks.length;
 
     const currentBooksPage = filteredBooks.slice(currentPage * PAGE_SIZE, (currentPage + 1) * PAGE_SIZE);
 
     const onDelete = (index: number) => {
-        books.splice(index, 1);
-        setBooks(books);
+        const newBooks = Array.from(books)
+        newBooks.splice(index, 1);
+        setBooks(newBooks);
     };
 
     const [addBookToggle, setAddBookToggle] = useState(false);
 
     const onAdd = (book: Book) => {
-        books.push(book);
-        setBooks(books);
-        const numberOfPages = Math.ceil(books.length / PAGE_SIZE)
+        const newBooks = Array.from(books)
+        newBooks.push(book);
+        setBooks(newBooks);
+        const numberOfPages = Math.ceil(newBooks.length / PAGE_SIZE)
         setCurrentPage(numberOfPages-1)
-
     };
 
 
