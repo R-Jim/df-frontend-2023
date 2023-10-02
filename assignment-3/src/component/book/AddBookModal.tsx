@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import Modal from '../modal/Modal';
 import Form from '../form/Form';
-import { InputSelect, InputText } from '../form/Input';
+import InputText from '../form/InputText';
+import InputSelect from '../form/InputSelect';
 import ActionBar from '../bar/Action';
 import Button from '../form/Button';
 import { Book } from '../entity/Book';
