@@ -34,10 +34,10 @@ function DeleteBookModal(params: DeleteBookModalProp) {
     }
 
     return (
-        <Modal title="Delete book" show={toggle} onClose={() => params.onClose}>
+        <Modal title="Delete book" show={toggle} onClose={() => params.onClose()}>
             <p>Do you want to delete <b>{bookName}</b> book?</p>
             <ActionBar>
-                <Button onClick={() => params.onClose} active>
+                <Button onClick={() => params.onClose()} active>
                     Cancel
                 </Button>
                 <Button onClick={onDelete}>
