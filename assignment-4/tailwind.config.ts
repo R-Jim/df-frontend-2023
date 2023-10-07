@@ -13,8 +13,20 @@ const config: Config = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      colors: {
+        'primary-color': '#d3455a',
+        'secondary-color': '#eebac2',
+        'text-primary-color': '#273844',
+        'text-secondary-color': '#ffffff',
+        'input-label-color': '#3c505f',
+        'input-placeholder-color': '#c5ced6',
+        'background-color': '#f7f8fa',
+        'background-table-color': '#ffffff',
+        'border-color': '#c5ced6',
+      }
     },
   },
   plugins: [],
+  darkMode: 'class',
 }
 export default config
