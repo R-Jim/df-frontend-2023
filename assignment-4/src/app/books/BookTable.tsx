@@ -1,10 +1,10 @@
 'use client'
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import Table from "../../components/table/Table";
-import DeleteBookModal from "../../components/book/DeleteBookModal";
-import { Book } from "../../components/entity/Book";
+import { useRouter } from 'next/navigation'
+import { Dispatch, SetStateAction, useState } from 'react'
+import Table from '../../components/table/Table'
+import DeleteBookModal from '../../components/book/DeleteBookModal'
+import { Book } from '../../components/entity/Book'
 
 const bookTableMapping = [
     {
@@ -22,49 +22,80 @@ const bookTableMapping = [
     {
         display: 'Action',
         key: 'action',
-    }
+    },
 ]
 
 interface bookTableProp {
     books: Book[]
-    setBooks: Function
+    setBooks: Dispatch<SetStateAction<Book[]>>
 
     currentPage: number
     pageSize: number
     total: number
-    onChangePage: Function
+    onChangePage: (pageNumber: number) => void
 }
 
 function BookTable(params: bookTableProp) {
     const router = useRouter()
 
-    const [deleteBook, setDeleteBook] = useState<Book>();
+    const [deleteBook, setDeleteBook] = useState<Book>()
 
     const books = params.books.map((book) => {
         return {
             ...book,
-            action: <div>
-                <button onClick={() => setDeleteBook(book)}>Delete</button>&nbsp;|&nbsp;
-                {book?.id !== undefined ? <button onClick={() => router.push(`/books/${encodeURIComponent(book?.id)}`)}>View</button> : ""}
-            </div>
-        };
-    });
-
-    const onDelete = (index: number) => {
-        const booksDataFromStore = localStorage.getItem("books")
-        if (booksDataFromStore != null) {
-            const books = JSON.parse(booksDataFromStore);
-            books.splice(index, 1);
-            params.setBooks(books)
+            action: (
+                <div>
+                    <button onClick={() => setDeleteBook(book)}>Delete</button>
+                    &nbsp;|&nbsp;
+                    {book?.id !== undefined ? (
+                        <button
+                            onClick={() =>
+                                router.push(
+                                    `/books/${encodeURIComponent(book?.id)}`,
+                                )
+                            }
+                        >
+                            View
+                        </button>
+                    ) : (
+                        ''
+                    )}
+                </div>
+            ),
         }
-    };
+    })
+
+    const onDelete = (books: Book[], deletedBook: Book) => {
+        console.log(books, deletedBook)
+        for (let index = 0; index < books.length; index++) {
+            const book = books[index]
+            if (book !== undefined && book.id === deletedBook.id) {
+                books.splice(index, 1)
+                params.setBooks(books)
+                break
+            }
+        }
+    }
 
     return (
         <>
-            <Table mappings={bookTableMapping} items={books} total={params.total} pageSize={params.pageSize} currentPage={params.currentPage} onChangePage={params.onChangePage} />
-            <DeleteBookModal book={deleteBook} onClose={() => { setDeleteBook(undefined) }} onDelete={onDelete} />
+            <Table
+                mappings={bookTableMapping}
+                items={books}
+                total={params.total}
+                pageSize={params.pageSize}
+                currentPage={params.currentPage}
+                onChangePage={params.onChangePage}
+            />
+            <DeleteBookModal
+                book={deleteBook}
+                onClose={() => {
+                    setDeleteBook(undefined)
+                }}
+                onDelete={onDelete}
+            />
         </>
     )
 }
 
-export default BookTable;
+export default BookTable

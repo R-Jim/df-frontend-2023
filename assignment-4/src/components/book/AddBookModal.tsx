@@ -1,69 +1,86 @@
-import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import Modal from '../modal/Modal';
-import Form from '../form/Form';
-import InputText from '../form/InputText';
-import InputSelect from '../form/InputSelect';
-import ActionBar from '../bar/Action';
-import Button from '../form/Button';
-import { Book } from '../entity/Book';
+import { useState } from 'react'
+import { v4 as uuidv4 } from 'uuid'
+import Modal from '../modal/Modal'
+import Form from '../form/Form'
+import InputText from '../form/InputText'
+import InputSelect from '../form/InputSelect'
+import ActionBar from '../bar/Action'
+import Button from '../form/Button'
+import { Book } from '../entity/Book'
 
-const BOOK_TOPIC_OPTIONS = ["Programming", "Database", 'DevOps']
+const BOOK_TOPIC_OPTIONS = ['Programming', 'Database', 'DevOps']
 
 const DEFAULT_BOOK_FORM = {
-    name: "",
-    author: "",
+    name: '',
+    author: '',
     topic: BOOK_TOPIC_OPTIONS[0],
 }
 
 interface AddBookModalProp {
-    toggle: boolean;
+    toggle: boolean
 
-    onClose: Function;
-    onAdd: Function;
+    onClose: () => void
+    onAdd: (book: Book) => void
 }
 
 function AddBookModal(params: AddBookModalProp) {
-    const toggle = params.toggle;
-    const [addBookForm, setAddBookForm] = useState(DEFAULT_BOOK_FORM);
+    const { toggle } = params
+    const [addBookForm, setAddBookForm] = useState(DEFAULT_BOOK_FORM)
 
     const onClose = () => {
-        setAddBookForm(DEFAULT_BOOK_FORM);
-        params.onClose();
-    };
+        setAddBookForm(DEFAULT_BOOK_FORM)
+        params.onClose()
+    }
 
     const onCreate = (e) => {
         const book = { ...addBookForm, id: uuidv4() }
         try {
             let books: Book[] = []
-            const booksDataFromStore = localStorage.getItem("books")
+            const booksDataFromStore = localStorage.getItem('books')
             if (booksDataFromStore != null) {
-                books = (JSON.parse(booksDataFromStore));
+                books = JSON.parse(booksDataFromStore)
             }
-            books.push(book);
+            books.push(book)
 
-            localStorage.setItem("books", JSON.stringify(books));
+            localStorage.setItem('books', JSON.stringify(books))
         } catch (error) {
-            console.error(error);
+            console.error(error)
         }
 
         params.onAdd(book)
-        onClose();
-        e.preventDefault();
-    };
-
-
+        onClose()
+        e.preventDefault()
+    }
 
     const onChange = ({ target: { name, value } }) => {
         setAddBookForm({ ...addBookForm, [name]: value })
-    };
+    }
 
     return (
         <Modal title="Add book" show={toggle} onClose={onClose}>
             <Form onSubmit={onCreate}>
-                <InputText title="Name" name="name" value={addBookForm.name} onChange={onChange} required />
-                <InputText title="Author" name="author" value={addBookForm.author} onChange={onChange} required />
-                <InputSelect title="Topic" name="topic" options={["Programming", "Database", 'DevOps']} value={addBookForm.topic} onChange={onChange} required />
+                <InputText
+                    title="Name"
+                    name="name"
+                    value={addBookForm.name}
+                    onChange={onChange}
+                    required
+                />
+                <InputText
+                    title="Author"
+                    name="author"
+                    value={addBookForm.author}
+                    onChange={onChange}
+                    required
+                />
+                <InputSelect
+                    title="Topic"
+                    name="topic"
+                    options={['Programming', 'Database', 'DevOps']}
+                    value={addBookForm.topic}
+                    onChange={onChange}
+                    required
+                />
                 <ActionBar>
                     <Button type="submit" active>
                         Create
@@ -71,7 +88,7 @@ function AddBookModal(params: AddBookModalProp) {
                 </ActionBar>
             </Form>
         </Modal>
-    );
-};
+    )
+}
 
-export default AddBookModal;
+export default AddBookModal

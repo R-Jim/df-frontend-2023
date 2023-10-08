@@ -6,21 +6,21 @@ import Header from '../components/header/Header'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Book store',
-  description: 'Book store app',
+    title: 'Book store',
+    description: 'Book store app',
 }
 
 export default function RootLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode
+    children: React.ReactNode
 }) {
-  return (
-    <html lang="en">
-      <body suppressHydrationWarning={true} className={inter.className}>
-        <Header />
-        {children}
-      </body>
-    </html>
-  )
+    return (
+        <html lang="en">
+            <body suppressHydrationWarning className={inter.className}>
+                <Header />
+                {children}
+            </body>
+        </html>
+    )
 }

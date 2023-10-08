@@ -1,9 +1,9 @@
-import { FormEventHandler } from 'react';
+import { FormEventHandler } from 'react'
 
 interface FormProp {
     children: JSX.Element | JSX.Element[]
 
-    onSubmit: FormEventHandler<HTMLFormElement>;
+    onSubmit: FormEventHandler<HTMLFormElement>
 }
 
 function Form(params: FormProp) {
@@ -11,7 +11,7 @@ function Form(params: FormProp) {
         <form className="flex mt-4 flex-col gap-5" onSubmit={params.onSubmit}>
             {params.children}
         </form>
-    );
-};
+    )
+}
 
-export default Form;
+export default Form
