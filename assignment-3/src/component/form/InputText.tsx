@@ -15,13 +15,13 @@ interface InputTextProp extends InputProp {
     onChange: ChangeEventHandler<HTMLInputElement>;
 }
 
-function InputText(params: InputTextProp) {
-    const { name, value, onChange, ...attributes } = params
+function InputText(props: InputTextProp) {
+    const { name, value, onChange, ...attributes } = props
 
     return (
         <div className="input-container">
-            <p>{params.title}</p>
-            <input name={params.name} type="text" value={params.value} onChange={params.onChange} {...attributes} />
+            <p>{props.title}</p>
+            <input name={props.name} type="text" value={props.value} onChange={props.onChange} {...attributes} />
         </div>
     );
 }

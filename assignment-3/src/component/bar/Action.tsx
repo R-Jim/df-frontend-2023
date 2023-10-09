@@ -4,10 +4,10 @@ interface ActionBarProp {
     children: JSX.Element | JSX.Element[];
 }
 
-function ActionBar(params:ActionBarProp) {
+function ActionBar(props:ActionBarProp) {
     return (
         <div className="action-bar">
-            {params.children}
+            {props.children}
         </div>
     );
 };

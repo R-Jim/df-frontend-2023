@@ -22,13 +22,13 @@ interface AddBookModalProp {
     onAdd: Function;
 }
 
-function AddBookModal(params: AddBookModalProp) {
-    const toggle = params.toggle;
+function AddBookModal(props: AddBookModalProp) {
+    const toggle = props.toggle;
     const [addBookForm, setAddBookForm] = useState(DEFAULT_BOOK_FORM);
 
     const onClose = () => {
         setAddBookForm(DEFAULT_BOOK_FORM);
-        params.onClose();
+        props.onClose();
     };
 
     const onCreate = (e) => {
@@ -45,7 +45,7 @@ function AddBookModal(params: AddBookModalProp) {
             console.error(error);
         }
 
-        params.onAdd(addBookForm)
+        props.onAdd(addBookForm)
         onClose();
         e.preventDefault();
     };

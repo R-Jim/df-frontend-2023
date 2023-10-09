@@ -11,9 +11,9 @@ interface DeleteBookModalProp {
     onClose: Function;
 }
 
-function DeleteBookModal(params: DeleteBookModalProp) {
-    const toggle = params.book !== undefined;
-    const bookName = toggle ? params.book.name : "";
+function DeleteBookModal(props: DeleteBookModalProp) {
+    const toggle = props.book !== undefined;
+    const bookName = toggle ? props.book.name : "";
 
     const onDelete = () => {
         try {
@@ -22,22 +22,22 @@ function DeleteBookModal(params: DeleteBookModalProp) {
             if (booksDataFromStore != null) {
                 books = (JSON.parse(booksDataFromStore));
             }
-            books.splice(params.index, 1)
+            books.splice(props.index, 1)
 
             localStorage.setItem("books", JSON.stringify(books))
         } catch (error) {
             console.error(error)
         }
 
-        params.onDelete(params.index);
-        params.onClose();
+        props.onDelete(props.index);
+        props.onClose();
     }
 
     return (
-        <Modal title="Delete book" show={toggle} onClose={() => params.onClose}>
+        <Modal title="Delete book" show={toggle} onClose={() => props.onClose}>
             <p>Do you want to delete <b>{bookName}</b> book?</p>
             <ActionBar>
-                <Button onClick={() => params.onClose} active>
+                <Button onClick={() => props.onClose} active>
                     Cancel
                 </Button>
                 <Button onClick={onDelete}>

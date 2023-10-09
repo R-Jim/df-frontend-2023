@@ -17,20 +17,20 @@ interface TableProps {
     onChangePage: (pageNumber: number) => void
 }
 
-function Table(params: TableProps) {
+function Table(props: TableProps) {
     return (
         <div>
             <table className="w-full">
                 <thead>
                     <tr>
-                        {params.mappings.map(({ display }) => (
+                        {props.mappings.map(({ display }) => (
                             <th key={display}>{display}</th>
                         ))}
                     </tr>
                 </thead>
                 <tbody>
-                    {params.items.map((item, index) => {
-                        const rows = params.mappings.map(({ key }) => (
+                    {props.items.map((item, index) => {
+                        const rows = props.mappings.map(({ key }) => (
                             <td key={key}>{item[key]}</td>
                         ))
 
@@ -40,22 +40,20 @@ function Table(params: TableProps) {
                         key="no-record"
                         className="hidden only-of-type:table-row"
                     >
-                        <td colSpan={params.mappings.length}>
+                        <td colSpan={props.mappings.length}>
                             <p className="text-center">No Record</p>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            {params.total !== 0 ? (
+            {props.total !== 0 ? (
                 <Pagination
-                    total={params.total}
-                    pageSize={params.pageSize}
-                    onChangePage={params.onChangePage}
-                    currentPage={params.currentPage}
+                    total={props.total}
+                    pageSize={props.pageSize}
+                    onChangePage={props.onChangePage}
+                    currentPage={props.currentPage}
                 />
-            ) : (
-                ''
-            )}
+            ) : null}
         </div>
     )
 }

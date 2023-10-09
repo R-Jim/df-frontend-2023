@@ -7,26 +7,28 @@ interface InputSelectProp extends InputProp {
     onChange: ChangeEventHandler<HTMLSelectElement>
 }
 
-function InputSelect(params: InputSelectProp) {
-    const { name, value, options, onChange, ...attributes } = params
-
-    const optionsRender = params.options.map((value) => (
-        <option key={value}>{value}</option>
-    ))
+function InputSelect(props: InputSelectProp) {
+    const { name, value, options, onChange, ...attributes } = props
 
     return (
         <div className="input-container">
-            <p className="text-input-label-color font-bold mb-0.5 m-0">
-                {params.title}
-            </p>
+            <label
+                htmlFor={props.name}
+                className="text-input-label-color font-bold mb-0.5 m-0"
+            >
+                {props.title}
+            </label>
             <select
-                name={params.name}
-                onChange={params.onChange}
-                value={params.value}
+                id={props.name}
+                name={props.name}
+                onChange={props.onChange}
+                value={props.value}
                 {...attributes}
                 className="border-border-color w-full box-border px-2.5 py-[8.25px] rounded-[5px] border-[1.5px] border-solid"
             >
-                {optionsRender}
+                {props.options.map((value) => (
+                    <option key={value}>{value}</option>
+                ))}
             </select>
         </div>
     )

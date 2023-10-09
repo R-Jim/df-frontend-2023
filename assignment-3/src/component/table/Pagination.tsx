@@ -16,18 +16,18 @@ interface PaginationButtonProp {
     onClick: Function;
 }
 
-function Pagination(params: PaginationProp) {
+function Pagination(props: PaginationProp) {
     const pageButtons: PaginationButtonProp[] = []
 
-    const numberOfPages = Math.ceil(params.total / params.pageSize)
+    const numberOfPages = Math.ceil(props.total / props.pageSize)
     for (let i = 0; i < numberOfPages; i++) {
         const button: PaginationButtonProp = {
             key: i,
             display: i + 1,
 
-            onClick: () => params.onChangePage(i),
+            onClick: () => props.onChangePage(i),
         }
-        if (params.currentPage === i) {
+        if (props.currentPage === i) {
             button.attributes = {
                 ...button.attributes,
                 "active": "true",

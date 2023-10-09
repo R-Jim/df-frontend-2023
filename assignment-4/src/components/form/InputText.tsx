@@ -14,19 +14,23 @@ interface InputTextProp extends InputProp {
     onChange: ChangeEventHandler<HTMLInputElement>
 }
 
-function InputText(params: InputTextProp) {
-    const { name, value, onChange, ...attributes } = params
+function InputText(props: InputTextProp) {
+    const { name, value, onChange, ...attributes } = props
 
     return (
         <div className="input-container">
-            <p className="text-input-label-color font-bold mb-0.5 m-0">
-                {params.title}
-            </p>
+            <label
+                htmlFor={props.name}
+                className="text-input-label-color font-bold mb-0.5 m-0"
+            >
+                {props.title}
+            </label>
             <input
-                name={params.name}
+                id={props.name}
+                name={props.name}
                 type="text"
-                value={params.value}
-                onChange={params.onChange}
+                value={props.value}
+                onChange={props.onChange}
                 {...attributes}
                 className="border-border-color w-full box-border px-2.5 py-[8.25px] rounded-[5px] border-[1.5px] border-solid"
             />

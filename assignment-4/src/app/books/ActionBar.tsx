@@ -2,7 +2,6 @@
 
 import { ChangeEventHandler, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import ActionBar from '../../components/bar/Action'
 import { Book } from '../../components/entity/Book'
 import Button from '../../components/form/Button'
 import AddBookModal from '../../components/book/AddBookModal'
@@ -15,7 +14,7 @@ interface bookActionBarProp {
     setSearchBookName: ChangeEventHandler<HTMLInputElement>
 }
 
-function BookActionBar(params: bookActionBarProp) {
+function BookActionBar(props: bookActionBarProp) {
     const [addBookToggle, setAddBookToggle] = useState(false)
 
     const genThreeBooks = () => {
@@ -44,7 +43,7 @@ function BookActionBar(params: bookActionBarProp) {
         })
         try {
             localStorage.setItem('books', JSON.stringify(books))
-            params.setBooks(books)
+            props.setBooks(books)
         } catch (error) {
             console.error(error)
         }
@@ -52,24 +51,24 @@ function BookActionBar(params: bookActionBarProp) {
 
     return (
         <>
-            <ActionBar>
+            <div className="flex items-center flex-col-reverse sm:flex-row-reverse gap-2.5 [&>input]:px-[8.25px] [&>input]:p-2.5 [&>input]:rounded [&>input]:border-[1.5px] [&>input]:border-border-color [&>input]:w-full sm:[&>input]:w-52 [&>button]:w-full sm:[&>button]:w-auto">
                 <Button onClick={() => setAddBookToggle(true)} active>
                     Add book
                 </Button>
                 <input
                     id="searchBookInput"
                     placeholder="Search books"
-                    value={params.searchBookName}
-                    onChange={params.setSearchBookName}
+                    value={props.searchBookName}
+                    onChange={props.setSearchBookName}
                 />
                 <Button onClick={genThreeBooks} active>
                     Gen 3 books
                 </Button>
-            </ActionBar>
+            </div>
             <AddBookModal
                 toggle={addBookToggle}
                 onClose={() => setAddBookToggle(false)}
-                onAdd={params.onAddBook}
+                onAdd={props.onAddBook}
             />
         </>
     )

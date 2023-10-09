@@ -8,10 +8,10 @@ interface ButtonProp {
     onClick?: React.MouseEventHandler<HTMLButtonElement>
 }
 
-function Button(params:ButtonProp) {
+function Button(props:ButtonProp) {
     return (
-        <button type={params.type} data-active={params.active} onClick={params.onClick} >
-            {params.children}
+        <button type={props.type} data-active={props.active} onClick={props.onClick} >
+            {props.children}
         </button>
     );
 };

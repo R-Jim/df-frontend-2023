@@ -4,7 +4,6 @@ import Modal from '../modal/Modal'
 import Form from '../form/Form'
 import InputText from '../form/InputText'
 import InputSelect from '../form/InputSelect'
-import ActionBar from '../bar/Action'
 import Button from '../form/Button'
 import { Book } from '../entity/Book'
 
@@ -23,13 +22,13 @@ interface AddBookModalProp {
     onAdd: (book: Book) => void
 }
 
-function AddBookModal(params: AddBookModalProp) {
-    const { toggle } = params
+function AddBookModal(props: AddBookModalProp) {
+    const { toggle } = props
     const [addBookForm, setAddBookForm] = useState(DEFAULT_BOOK_FORM)
 
     const onClose = () => {
         setAddBookForm(DEFAULT_BOOK_FORM)
-        params.onClose()
+        props.onClose()
     }
 
     const onCreate = (e) => {
@@ -47,7 +46,7 @@ function AddBookModal(params: AddBookModalProp) {
             console.error(error)
         }
 
-        params.onAdd(book)
+        props.onAdd(book)
         onClose()
         e.preventDefault()
     }
@@ -81,11 +80,11 @@ function AddBookModal(params: AddBookModalProp) {
                     onChange={onChange}
                     required
                 />
-                <ActionBar>
+                <div className="flex items-center flex-col-reverse sm:flex-row-reverse gap-2.5 [&>button]:w-full sm:[&>button]:w-auto">
                     <Button type="submit" active>
                         Create
                     </Button>
-                </ActionBar>
+                </div>
             </Form>
         </Modal>
     )

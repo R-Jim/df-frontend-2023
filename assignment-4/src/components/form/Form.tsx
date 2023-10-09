@@ -6,10 +6,10 @@ interface FormProp {
     onSubmit: FormEventHandler<HTMLFormElement>
 }
 
-function Form(params: FormProp) {
+function Form(props: FormProp) {
     return (
-        <form className="flex mt-4 flex-col gap-5" onSubmit={params.onSubmit}>
-            {params.children}
+        <form className="flex mt-4 flex-col gap-5" onSubmit={props.onSubmit}>
+            {props.children}
         </form>
     )
 }

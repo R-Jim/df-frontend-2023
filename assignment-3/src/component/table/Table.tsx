@@ -17,9 +17,9 @@ interface TableProps {
     onChangePage: Function;
 }
 
-function Table(params: TableProps) {
-    let itemsRender: JSX.Element[] = params.items.map((item, index) => {
-        const rows = params.mappings.map(({ key }) =>
+function Table(props: TableProps) {
+    let itemsRender: JSX.Element[] = props.items.map((item, index) => {
+        const rows = props.mappings.map(({ key }) =>
             <td key={key}>{item[key]}</td>
         );
 
@@ -33,21 +33,21 @@ function Table(params: TableProps) {
     if (itemsRender.length === 0) {
         itemsRender = [(
             <tr key="no-record">
-                <td colSpan={params.mappings.length}>
+                <td colSpan={props.mappings.length}>
                     <p className='no-record-txt'>No Record</p>
                 </td>
             </tr>
         )];
     }
 
-    if (params.currentPage !== 0 && params.total < params.currentPage * params.pageSize) {
-        params.onChangePage(0);
+    if (props.currentPage !== 0 && props.total < props.currentPage * props.pageSize) {
+        props.onChangePage(0);
     }
 
     useEffect(() => {
-        if (params.currentPage !== 0 && params.items.length === 0) {
-            const numberOfPages = Math.ceil(params.total / params.pageSize)
-            params.onChangePage(numberOfPages - 1);
+        if (props.currentPage !== 0 && props.items.length === 0) {
+            const numberOfPages = Math.ceil(props.total / props.pageSize)
+            props.onChangePage(numberOfPages - 1);
         }
     })
     
@@ -56,7 +56,7 @@ function Table(params: TableProps) {
             <table>
                 <thead>
                     <tr>
-                        {params.mappings.map(({ display }) =>
+                        {props.mappings.map(({ display }) =>
                             <td key={display}>{display}</td>
                         )}
                     </tr>
@@ -65,8 +65,8 @@ function Table(params: TableProps) {
                     {itemsRender}
                 </tbody>
             </table>
-            {params.total !== 0 ?
-                <Pagination total={params.total} pageSize={params.pageSize} onChangePage={params.onChangePage} currentPage={params.currentPage} />
+            {props.total !== 0 ?
+                <Pagination total={props.total} pageSize={props.pageSize} onChangePage={props.onChangePage} currentPage={props.currentPage} />
                 : ""}
         </div>
     );

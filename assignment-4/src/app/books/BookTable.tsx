@@ -35,12 +35,12 @@ interface bookTableProp {
     onChangePage: (pageNumber: number) => void
 }
 
-function BookTable(params: bookTableProp) {
+function BookTable(props: bookTableProp) {
     const router = useRouter()
 
     const [deleteBook, setDeleteBook] = useState<Book>()
 
-    const books = params.books.map((book) => {
+    const books = props.books.map((book) => {
         return {
             ...book,
             action: (
@@ -66,12 +66,11 @@ function BookTable(params: bookTableProp) {
     })
 
     const onDelete = (books: Book[], deletedBook: Book) => {
-        console.log(books, deletedBook)
         for (let index = 0; index < books.length; index++) {
             const book = books[index]
             if (book !== undefined && book.id === deletedBook.id) {
                 books.splice(index, 1)
-                params.setBooks(books)
+                props.setBooks(books)
                 break
             }
         }
@@ -82,10 +81,10 @@ function BookTable(params: bookTableProp) {
             <Table
                 mappings={bookTableMapping}
                 items={books}
-                total={params.total}
-                pageSize={params.pageSize}
-                currentPage={params.currentPage}
-                onChangePage={params.onChangePage}
+                total={props.total}
+                pageSize={props.pageSize}
+                currentPage={props.currentPage}
+                onChangePage={props.onChangePage}
             />
             <DeleteBookModal
                 book={deleteBook}

@@ -7,10 +7,10 @@ interface FormProp {
     onSubmit: FormEventHandler<HTMLFormElement>;
 }
 
-function Form(params:FormProp) {
+function Form(props:FormProp) {
    return (
-    <form className="form" onSubmit={params.onSubmit}>
-        {params.children}
+    <form className="form" onSubmit={props.onSubmit}>
+        {props.children}
     </form>
    );
 };

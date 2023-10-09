@@ -14,7 +14,7 @@ interface queryParam {
     value: string | null
 }
 
-const bookQueryParams: queryParam[] = [
+const bookQueryprops: queryParam[] = [
     {
         name: 'q',
         value: null,
@@ -77,8 +77,8 @@ function Main() {
         }
     }, [isBooksLoaded, currentPage, currentBooksPage.length, total])
 
-    const pushPath = (queryParams: queryParam[]) => {
-        const queryParamURLs = queryParams
+    const pushPath = (queryprops: queryParam[]) => {
+        const queryParamURLs = queryprops
             .filter(({ value }) => value != null)
             .map((param, index) => {
                 if (index === 0) {
@@ -91,26 +91,26 @@ function Main() {
     }
 
     const onSearch = ({ target: { value } }) => {
-        bookQueryParams[0].value = value !== '' ? value : null
+        bookQueryprops[0].value = value !== '' ? value : null
         if (currentPage > 0) {
-            bookQueryParams[1].value = (currentPage + 1).toString()
+            bookQueryprops[1].value = (currentPage + 1).toString()
         } else {
-            bookQueryParams[1].value = null
+            bookQueryprops[1].value = null
         }
 
         setSearchBookName(value)
-        pushPath(bookQueryParams)
+        pushPath(bookQueryprops)
     }
 
     const onChangePage = (pageNumber) => {
-        bookQueryParams[0].value = searchBookName !== '' ? searchBookName : null
+        bookQueryprops[0].value = searchBookName !== '' ? searchBookName : null
         if (pageNumber > 0) {
-            bookQueryParams[1].value = (pageNumber + 1).toString()
+            bookQueryprops[1].value = (pageNumber + 1).toString()
         } else {
-            bookQueryParams[1].value = null
+            bookQueryprops[1].value = null
         }
         setCurrentPage(pageNumber)
-        pushPath(bookQueryParams)
+        pushPath(bookQueryprops)
     }
 
     const onAdd = (book: Book) => {

@@ -6,15 +6,15 @@ interface ButtonProp {
     onClick?: React.MouseEventHandler<HTMLButtonElement>
 }
 
-function Button(params: ButtonProp) {
+function Button(props: ButtonProp) {
     return (
         <button
-            type={params.type}
-            data-active={params.active}
-            onClick={params.onClick}
+            type={props.type}
+            data-active={props.active}
+            onClick={props.onClick}
             className="min-w-[90px] bg-transparent text-primary-color px-[15px] py-2.5 rounded border-none data-[active]:bg-primary-color data-[active]:text-text-secondary-color"
         >
-            {params.children}
+            {props.children}
         </button>
     )
 }
