@@ -1,14 +1,13 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter, notFound } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { Book } from '../../../components/entity/Book'
 import Button from '../../../components/form/Button'
 import DeleteBookModal from '../../../components/book/DeleteBookModal'
 
 function View({ params }: { params: { id: string } }) {
     const router = useRouter()
-
     const [book, setBook] = useState<Book>()
 
     useEffect(() => {
@@ -21,10 +20,10 @@ function View({ params }: { params: { id: string } }) {
                     const book = books[index]
                     if (book.id === params.id) {
                         setBook(book)
-                        break
+                        return
                     }
                 }
-                return notFound()
+                router.push("/books/not-found")
             }
         } catch (error) {
             console.error(error)

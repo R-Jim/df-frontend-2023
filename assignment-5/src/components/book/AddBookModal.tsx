@@ -1,16 +1,12 @@
-import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
+import { FieldValues, SubmitHandler } from 'react-hook-form'
 import Modal from '../modal/Modal'
 import Form from '../form/Form'
-import InputText from '../form/InputText'
-import InputSelect from '../form/InputSelect'
-import ActionBar from '../bar/Action'
-import Button from '../form/Button'
 import { Book } from '../entity/Book'
 
 const BOOK_TOPIC_OPTIONS = ['Programming', 'Database', 'DevOps']
 
-const DEFAULT_BOOK_FORM = {
+export const DEFAULT_BOOK_FORM = {
     name: '',
     author: '',
     topic: BOOK_TOPIC_OPTIONS[0],
@@ -23,18 +19,21 @@ interface AddBookModalProp {
     onAdd: (book: Book) => void
 }
 
-function AddBookModal(params: AddBookModalProp) {
-    const { toggle } = params
-    const [addBookForm, setAddBookForm] = useState(DEFAULT_BOOK_FORM)
+function AddBookModal(props: AddBookModalProp) {
+    const { toggle } = props
 
     const onClose = () => {
-        setAddBookForm(DEFAULT_BOOK_FORM)
-        params.onClose()
+        props.onClose()
     }
 
-    const onCreate = (e) => {
-        const book = { ...addBookForm, id: uuidv4() }
+    const onCreate: SubmitHandler<FieldValues> = (data) => {
         try {
+            const book: Book = {
+                id: uuidv4(),
+                name: data['name'],
+                author: data['author'],
+                topic: data['topic'],
+            }
             let books: Book[] = []
             const booksDataFromStore = localStorage.getItem('books')
             if (booksDataFromStore != null) {
@@ -43,50 +42,70 @@ function AddBookModal(params: AddBookModalProp) {
             books.push(book)
 
             localStorage.setItem('books', JSON.stringify(books))
+            props.onAdd(book)
         } catch (error) {
             console.error(error)
         }
-
-        params.onAdd(book)
         onClose()
-        e.preventDefault()
-    }
-
-    const onChange = ({ target: { name, value } }) => {
-        setAddBookForm({ ...addBookForm, [name]: value })
     }
 
     return (
         <Modal title="Add book" show={toggle} onClose={onClose}>
-            <Form onSubmit={onCreate}>
-                <InputText
-                    title="Name"
-                    name="name"
-                    value={addBookForm.name}
-                    onChange={onChange}
-                    required
-                />
-                <InputText
-                    title="Author"
-                    name="author"
-                    value={addBookForm.author}
-                    onChange={onChange}
-                    required
-                />
-                <InputSelect
-                    title="Topic"
-                    name="topic"
-                    options={['Programming', 'Database', 'DevOps']}
-                    value={addBookForm.topic}
-                    onChange={onChange}
-                    required
-                />
-                <ActionBar>
-                    <Button type="submit" active>
-                        Create
-                    </Button>
-                </ActionBar>
-            </Form>
+            <Form
+                defaultValues={{
+                    name: '',
+                    author: '',
+                    topic: BOOK_TOPIC_OPTIONS[0],
+                }}
+                onSubmit={onCreate}
+                fields={[
+                    {
+                        title: 'Name(*)',
+                        name: 'name',
+                        type: 'TEXT',
+                        registerOptions: {
+                            required: 'Name is required',
+                            minLength: {
+                                value: 5,
+                                message: 'Name must have at least 5 characters',
+                            },
+                        },
+                    },
+                    {
+                        title: 'Author(*)',
+                        name: 'author',
+                        type: 'TEXT',
+                        registerOptions: {
+                            required: 'Author is required',
+                            pattern: {
+                                value: /^[a-zA-Z\s]*$/,
+                                message:
+                                    'Author must have only letters and spaces',
+                            },
+                        },
+                    },
+                    {
+                        title: 'Topic',
+                        name: 'topic',
+                        type: 'SELECT',
+                        options: BOOK_TOPIC_OPTIONS,
+                        registerOptions: {
+                            required: 'Topic is required',
+                            validate: (value) =>
+                                BOOK_TOPIC_OPTIONS.some(
+                                    (option) => option === value,
+                                ) || 'Topic invalid',
+                        },
+                    },
+                ]}
+                actions={[
+                    {
+                        type: 'submit',
+                        title: 'Create',
+                        active: true,
+                    },
+                ]}
+            />
         </Modal>
     )
 }

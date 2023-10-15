@@ -66,7 +66,6 @@ function BookTable(params: bookTableProp) {
     })
 
     const onDelete = (books: Book[], deletedBook: Book) => {
-        console.log(books, deletedBook)
         for (let index = 0; index < books.length; index++) {
             const book = books[index]
             if (book !== undefined && book.id === deletedBook.id) {

@@ -22,7 +22,10 @@ function Header() {
             <h1 className="text-lg font-bold p-2 md:w-3/6">Bookstore</h1>
             <div className="md:w-3/6 flex gap-2 items-center justify-end">
                 <Toggle on={isDarkModeOn} onClick={onDarkMode} />
-                <span className="mr-2"> {isDarkModeOn ? 'Dark' : 'Light'} mode</span>
+                <span className="mr-2">
+                    {' '}
+                    {isDarkModeOn ? 'Dark' : 'Light'} mode
+                </span>
                 <Profile />
             </div>
         </header>
