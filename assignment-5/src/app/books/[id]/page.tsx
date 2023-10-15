@@ -23,12 +23,12 @@ function View({ params }: { params: { id: string } }) {
                         return
                     }
                 }
-                router.push("/books/not-found")
+                router.push('/books/not-found')
             }
         } catch (error) {
             console.error(error)
         }
-    }, [params.id])
+    }, [params.id, router])
 
     const [deleteBook, setDeleteBook] = useState<Book>()
     const onDelete = () => {
