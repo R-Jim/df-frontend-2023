@@ -1,0 +1,14 @@
+/*
+  Based on TailwindCSS recommendations,
+  consider using classes instead of the `@apply` directive
+  @see https://tailwindcss.com/docs/reusing-styles#avoiding-premature-abstraction
+*/
+table,
+th, td {
+    @apply border-[1.5px] dark:bg-zinc-900 border-border-color border-collapse p-2.5 bg-background-table-color text-start 
+}
+
+
+td button {
+    @apply min-w-[auto] text-[1em] underline text-primary-color decoration-secondary-color p-0;
+}
