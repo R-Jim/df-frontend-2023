@@ -7,7 +7,7 @@ import { signOut } from 'next-auth/react'
 import { Book } from '../../components/entity/Book'
 import BookActionBar from './ActionBar'
 import BookTable from './BookTable'
-import { GetBooksResponse, getBooks } from '../api/book/route'
+import { GetBooksResponse, getBooks } from '../api/book'
 
 const PAGE_SIZE = 5
 
@@ -34,22 +34,22 @@ function Main() {
     const [searchBookName, setSearchBookName] = useState(searchParams.get('q'))
     const [books, setBooks] = useState<Book[]>([])
 
-    let pageNumberFromURL = 0
+    let pageNumberFromURL = 1
     const pageNumberParam = searchParams.get('page')
     if (pageNumberParam !== null) {
-        pageNumberFromURL = parseInt(pageNumberParam, 10) - 1
+        pageNumberFromURL = parseInt(pageNumberParam, 10)
     }
     const [currentPage, setCurrentPage] = useState(pageNumberFromURL)
     const [total, setTotal] = useState(0)
 
-    useEffect(() => {
+    const fetchBooks = () => {
         getBooks({
             page: currentPage,
             pageSize: PAGE_SIZE,
             query: searchBookName ?? '',
         })
             .catch((error) => {
-                toast.error(error)
+                toast.error(error.message)
                 if (error.code === 401) {
                     signOut()
                 }
@@ -57,7 +57,19 @@ function Main() {
             .then((response: GetBooksResponse) => {
                 setBooks(response.data)
                 setTotal(response.metadata.totalRecords)
+                if (currentPage > response.metadata.totalPages) {
+                    onChangePage(response.metadata.totalPages)
+                } else if (
+                    currentPage === 0 &&
+                    response.metadata.totalPages > 0
+                ) {
+                    onChangePage(1)
+                }
             })
+    }
+
+    useEffect(() => {
+        fetchBooks()
     }, [currentPage, searchBookName])
 
     const pushPath = (queryParams: queryParam[]) => {
@@ -75,8 +87,8 @@ function Main() {
 
     const onSearch = ({ target: { value } }) => {
         bookQueryParams[0].value = value !== '' ? value : null
-        if (currentPage > 0) {
-            bookQueryParams[1].value = (currentPage + 1).toString()
+        if (currentPage > 1) {
+            bookQueryParams[1].value = currentPage.toString()
         } else {
             bookQueryParams[1].value = null
         }
@@ -87,8 +99,8 @@ function Main() {
 
     const onChangePage = (pageNumber) => {
         bookQueryParams[0].value = searchBookName !== '' ? searchBookName : null
-        if (pageNumber > 0) {
-            bookQueryParams[1].value = (pageNumber + 1).toString()
+        if (pageNumber > 1) {
+            bookQueryParams[1].value = pageNumber.toString()
         } else {
             bookQueryParams[1].value = null
         }
@@ -99,13 +111,13 @@ function Main() {
     return (
         <main className="m-2 flex flex-col gap-4 [&>div]:overflow-scroll">
             <BookActionBar
-                setBooks={setBooks}
+                onAdd={fetchBooks}
                 searchBookName={searchBookName !== null ? searchBookName : ''}
                 setSearchBookName={onSearch}
             />
             <BookTable
                 books={books}
-                setBooks={setBooks}
+                onDelete={fetchBooks}
                 currentPage={currentPage}
                 total={total}
                 pageSize={PAGE_SIZE}

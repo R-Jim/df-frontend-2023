@@ -22,10 +22,10 @@ function Pagination(params: PaginationProp) {
     const pageButtons: paginationButtonProp[] = []
 
     const numberOfPages = Math.ceil(params.total / params.pageSize)
-    for (let i = 0; i < numberOfPages; i++) {
+    for (let i = 1; i <= numberOfPages; ++i) {
         const button: paginationButtonProp = {
             key: i,
-            display: i + 1,
+            display: i,
 
             onClick: () => params.onChangePage(i),
         }
