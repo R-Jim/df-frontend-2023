@@ -7,12 +7,13 @@ import { signOut } from 'next-auth/react'
 import Modal from '../modal/Modal'
 import Form from '../form/Form'
 import { Topic } from '../entity/Book'
-import { GetTopicsResponse, getTopics } from '../../app/api/topic/route'
-import { createBook } from '../../app/api/book/route'
+import { GetTopicsResponse, getTopics } from '../../app/api/topic'
+import { createBook } from '../../app/api/book'
 
 interface AddBookModalProp {
     toggle: boolean
 
+    onAdd: () => void
     onClose: () => void
 }
 
@@ -44,9 +45,12 @@ function AddBookModal(props: AddBookModalProp) {
             author: data['author'],
             topicID: parseInt(data['topic'], 10),
         })
-            .catch((error) => toast.error(error))
-            .then(() => toast.success('Add book success'))
-        onClose()
+            .catch((error) => toast.error(error.message))
+            .then(() => {
+                toast.success('Add book success')
+                props.onAdd()
+                onClose()
+            })
     }
 
     return (

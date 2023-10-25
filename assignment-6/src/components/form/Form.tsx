@@ -1,6 +1,7 @@
 'use client'
 
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import { RefObject } from 'react'
 import InputText, { InputProp } from './InputText'
 import InputSelect, { InputSelectProp } from './InputSelect'
 import ActionBar from '../bar/Action'
@@ -19,6 +20,7 @@ interface FormAction {
 }
 
 interface FormProp {
+    refs?: RefObject<HTMLFormElement>
     defaultValues: FieldValues
 
     fields: FormField[]
@@ -32,12 +34,16 @@ function Form(props: FormProp) {
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm({ defaultValues: props.defaultValues })
 
     return (
         <form
             className="flex mt-4 flex-col gap-5"
-            onSubmit={handleSubmit(props.onSubmit)}
+            onSubmit={handleSubmit((data) => {
+                props.onSubmit(data)
+                reset()
+            })}
         >
             {props.fields.map(
                 ({ type, name, title, options, registerOptions }) => {

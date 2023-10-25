@@ -2,9 +2,12 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { toast } from 'react-toastify'
+import { signOut } from 'next-auth/react'
 import { Book } from '../../../components/entity/Book'
 import Button from '../../../components/form/Button'
 import DeleteBookModal from '../../../components/book/DeleteBookModal'
+import { getBook } from '../../api/book'
 
 function View({ params }: { params: { id: string } }) {
     const router = useRouter()
@@ -12,19 +15,25 @@ function View({ params }: { params: { id: string } }) {
 
     useEffect(() => {
         try {
-            const booksDataFromStore = localStorage.getItem('books')
-            if (booksDataFromStore != null) {
-                const books: Book[] = JSON.parse(booksDataFromStore)
-
-                for (let index = 0; index < books.length; index++) {
-                    const book = books[index]
-                    if (book.id === params.id) {
-                        setBook(book)
-                        return
+            getBook(parseInt(params.id, 10))
+                .catch((error) => {
+                    switch (error.code) {
+                        case 401:
+                            signOut()
+                            break
+                        case 404:
+                            router.push('/books/not-found')
+                            break
+                        default:
+                            toast.error(error.message)
+                            break
                     }
-                }
-                router.push('/books/not-found')
-            }
+                })
+                .then((response) => {
+                    if (response !== undefined) {
+                        setBook(response.data)
+                    }
+                })
         } catch (error) {
             console.error(error)
         }
@@ -46,7 +55,7 @@ function View({ params }: { params: { id: string } }) {
                     <b>Author:</b> {book?.author}
                 </p>
                 <p>
-                    <b>Topic:</b> {book?.topic.name}
+                    <b>Topic:</b> {book?.topic?.name}
                 </p>
             </div>
             <Button

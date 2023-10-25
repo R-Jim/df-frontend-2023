@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { useState } from 'react'
 import Table from '../../components/table/Table'
 import DeleteBookModal from '../../components/book/DeleteBookModal'
 import { Book } from '../../components/entity/Book'
@@ -27,7 +27,7 @@ const bookTableMapping = [
 
 interface bookTableProp {
     books: Book[]
-    setBooks: Dispatch<SetStateAction<Book[]>>
+    onDelete: () => void
 
     currentPage: number
     pageSize: number
@@ -65,17 +65,6 @@ function BookTable(params: bookTableProp) {
         }
     })
 
-    const onDelete = (books: Book[], deletedBook: Book) => {
-        for (let index = 0; index < books.length; index++) {
-            const book = books[index]
-            if (book !== undefined && book.id === deletedBook.id) {
-                books.splice(index, 1)
-                params.setBooks(books)
-                break
-            }
-        }
-    }
-
     return (
         <>
             <Table
@@ -91,7 +80,7 @@ function BookTable(params: bookTableProp) {
                 onClose={() => {
                     setDeleteBook(undefined)
                 }}
-                onDelete={onDelete}
+                onDelete={params.onDelete}
             />
         </>
     )

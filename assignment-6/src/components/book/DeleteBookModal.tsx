@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify'
 import { signOut } from 'next-auth/react'
-import { deleteBook } from '../../app/api/book/route'
+import { deleteBook } from '../../app/api/book'
 import ActionBar from '../bar/Action'
 import { Book } from '../entity/Book'
 import Button from '../form/Button'
@@ -9,7 +9,7 @@ import Modal from '../modal/Modal'
 interface DeleteBookModalProp {
     book: Book | undefined
 
-    onDelete: (books: Book[], deletedBook: Book) => void
+    onDelete: () => void
     onClose: () => void
 }
 
@@ -22,12 +22,15 @@ function DeleteBookModal(params: DeleteBookModalProp) {
             if (params.book !== undefined) {
                 deleteBook(params.book.id)
                     .catch((error) => {
-                        toast.error(error)
+                        toast.error(error.message)
                         if (error.code === 401) {
                             signOut()
                         }
                     })
-                    .then(() => toast.success('book deleted'))
+                    .then(() => {
+                        toast.success('book deleted')
+                        params.onDelete()
+                    })
             }
         } catch (error) {
             console.error(error)

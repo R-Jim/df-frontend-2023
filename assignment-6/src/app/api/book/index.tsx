@@ -35,6 +35,30 @@ export async function getBooks({ page, pageSize, query }: GetBooksRequest) {
     return data
 }
 
+export async function getBook(bookID: number) {
+    const session = await getSession()
+    if (
+        session === undefined ||
+        session?.user === undefined ||
+        session.user.secret === undefined
+    ) {
+        throw new ResponseError(401, 'not authenticated')
+    }
+
+    const { data } = await axios
+        .get(`${process.env.NEXT_PUBLIC_API_URL}/books/${bookID}`, {
+            headers: { Authorization: `Bearer ${session.user.secret}` },
+        })
+        .catch((error) => {
+            throw new ResponseError(
+                error.response.data.status,
+                error.response.data.message,
+            )
+        })
+
+    return data
+}
+
 interface GetBooksRequest {
     page?: number
     pageSize?: number
